@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{name}}
+    </div>
+</body>
+<script src="./js/jquery-1.8.3.min.js"></script>
+<!-- <script>
+$(document).ready(function () {
+$("#app").append("<h2>Hello Word! !</h2>");
+});
+</script> -->
+<script src="./js/vue.min.js"></script>
+<script>
+    var VM = new Vue({
+        el: "#app",
+        data : {
+            name :"Hello world !!"
+        },
+    });
+</script>
+</html>

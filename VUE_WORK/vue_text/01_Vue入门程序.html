@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!--引入Vue.js-->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script> -->
+<!-- 本地引入 -->
+<script src="./js/vue.min.js"></script>
+<body>
+    <!-- 1.创建id为app的div -->
+    <div id="app">
+        {{name }} <br>
+        {{school.name}} {{school.mobile}} <br>
+        <ul>
+            <li>{{naems[0]}}</li>
+            <li>{{naems[1]}}</li>
+            <li>{{naems[2]}}</li>
+        </ul>
+    </div>
+</body>
+<script>
+//2.创建vue实例
+var VM = new Vue({
+
+//3.定义 Vue实例挂载的元素节点,表示vue接管该div 
+el:"#app",
+//4.定义model模型数据对象
+data:{
+    name: "Hello Vue!!!",
+    //对象类型
+    school:{
+       name:"拉钩教育", 
+       mobile:"1001001"
+    },
+    //数组类型
+    naems:["崔巍","大头","胡斌"],
+    
+   },
+});
+</script>
+</html>
