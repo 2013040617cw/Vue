@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">'
+        <ul>
+            <li v-for = "(item,index) in arr">
+                    {{index+1 }}城市: {{item}}
+            </li>
+        </ul>
+        <input type="button" value="添加数据" @click="add">
+        <input type="button" value="移除数据" @click="remove">
+        <!-- 使用h2标签显示
+v-for 结合 v-bind一起使用
+-->
+<h2 v-for="p in	persons" v-bind:title="p.name">
+        {{p.name}}
+        </h2>
+    </div>
+    
+</body>
+<script>
+    var vm = new Vue({
+
+  el:"#app",
+    data:{
+           arr: ["崔巍", "大头","胡斌"],
+           persons:[
+            {name : "崔巍"},
+            {nama : "大头"},
+            {name  : "胡斌"},
+           ]
+    },
+    methods: {
+        add:function(){
+//push 添加
+this.persons.push({name:"多利安·刘能"})
+},
+remove:function(){ 
+    this.persons.shift();
+       }
+    },
+ })
+</script>
+</html>

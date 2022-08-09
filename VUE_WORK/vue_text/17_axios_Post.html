@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/axios.min.js"></script>
+<body>
+    <!-- 设置一个按钮 -->
+    <input type="button" value="Pst请求" id="post">
+</body>
+<script>
+    /*
+    请求地址:https://autumnfish.cn/api/user/reg 
+    请求方法:post
+    请求参数:username(用户名,字符串) 
+    响应内容:注册成功或失败
+    */
+    // 通过id获取按钮，并添加事件
+document.getElementById("post").onclick =  function(){
+    axios.get("https://autumnfish.cn/api/user/reg",{username : "cuiwei"})
+    .then (function(resp){
+            console.log(resp)
+    },function(error){
+        console.log(error)
+    })
+}
+</script>
+</html>

@@ -1,4 +1,4 @@
-# Vue.js
+# gVue.js
 
 # **1.1** ***Vue.js*** ***介绍***
 
@@ -260,735 +260,949 @@ $("#app").append("<h2>Hello Word! !</h2>");
 
 作用: 设置元素的 innerHTML (可以向元素中写入新的标签)
 
-### ***\*代码示例\****
+代码示例
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        {{message}}
 
+        <h1 v-text = "message"></h1>
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps13.png) |
+        <!-- v-html设置元素的Innerhtml -->
+        <h1 v-text = "url"></h1>
+        <h1 v-html = "url"></h1>
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el : "#app",
+    data : {
+        message : "崔巍最帅",
+       url: "<a href = http://www.baidu.com>百度一下</a>",  
+    },
+});
 
- 
+</script>
+</html>
+```
 
+运行结果：
 
+<img src="Vue.js.assets/image-20220808100003712.png" alt="image-20220808100003712" style="zoom:67%;" /> 
 
- 
+区别:v-text指令直接取走了里面的值，而v-html会进行解析。
 
-**3.** **v-on** **指令**
+### **3.** **v-on** **指令**
 
 作用: 为元素绑定事件, 比如: v-on:click,可以简写为 @click="方法"
 
 绑定的方法定义在 VUE实例的, method属性中
 
-### ***\*语法格式\****
+语法格式
+
+```html
+<div id="app">
+<!-- 使用v-on 绑定click 点击事件 -->
+<input type="button" value="点击按钮" v-on:click="方法名">
+<!-- 使用 @符号也可以绑定-->
+<input type="button" value="点击按钮" @click="方法名">
+</div>
+
+var VM = new Vue({ el:"#app",
+//通过methods ,专门存放Vue中的方法
+methods:{
+方法名:function(){ alert("123!")
+    }
+})
+```
+
+补充： @dblclick设置双击按钮。
+
+代码示例:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <input type="button" value="点击按钮" v-on:click = "show">
+
+        <!-- 简写方式 -->
+        <input type="button" value="点击按钮" @click = "show">
+
+        <!-- 双击事件 -->
+        <input type="button" value="点击按钮" @dblclick = "show">
+
+        <!-- 绑定事件，修改内容 -->
+        <h1 @click = "ChangeFood">{{food}}</h1>
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el :"#app",
+    data : {
+        food : "火锅真好吃！！"
+    },
+    methods: {
+        show :function(){
+            alert("我是it崔巍")
+        },
+        ChangeFood : function(){
+            this.food = this.food + ",明天还要吃"
+        },
+    },
+});
 
 
+</script>
+</html>
+```
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps14.png) |
+运行结果：
 
- 
+<img src="Vue.js.assets/image-20220808102006426.png" alt="image-20220808102006426" style="zoom:67%;" />
 
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps15.png)
-
- 
-
-**代码示例**
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps16.png) |
-
- 
-
-
-
- 
-
-**4.** **计数器案例**
+### **4.** **计数器案例**
 
 1) 编码步骤
 
-\1. data中定义数据: 比如 num 值为1
+1. data中定义数据: 比如 num 值为1
 
-\2. methods中添加两个方法: 比如add(递增) ,sub(递减)
+2. methods中添加两个方法: 比如add(递增) ,sub(递减)
 
-\3. 使用{{}} 将num设置给 span标签
+3. 使用{{}} 将num设置给 span标签
 
-\4. 使用v-on 将add,sub 分别绑定给 + ,- 按钮
+4. 使用v-on 将add,sub 分别绑定给 + ,- 按钮
 
-\5. 累加到10 停止
+5. 累加到10 停止
 
-\6. 递减到0 停止
+6. 递减到0 停
 
-2) 页面准备
+2) 案例演示
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/inputNum.css">
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+  <div id="#app">
+      <!-- Class属性是为了  引用你页面的类样式 -->
+    <input type="button" class="btn btn_plus" @click="add">
+    <!-- span标签的作用：组合文档中的行内元素。 -->
+    <span>{{num}}</span>
+    <input type="button" class="btn btn_minus" @click="sub">
+  </div>
+</body>
 
+<script>
+var vm = new Vue({
+    el : "#app",
+    data :{
+      num:1
+    },
+    methods: {
+        add : function(){
+            if(this.num <10){
+                this.num++;
+            }
+            else{
+              alert("别点了，最大了")
+            }
+        },
+        sub: function(){
+            if(this.num>0){
+               this.num--;
+            }
+            else{
+                alert("别点了，最小了");
+            }
+        },
+    },
+});
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps17.png) |
+</script>
+</html>
+```
 
- 
+3)案例总结
 
+1) 案例总结
 
+- 创建vue实例时：el（挂载点），data(数据)，methods(方法)
+- v-on指令的作用是绑定事件，简写为@
+- 方法中使用的this关键字，获取data中的数据
+- v-text与{{}}的作用都是用来设置元素的文本值
 
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps18.png)
-
- 
-
-3) 案例演示
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps19.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps20.png)
-
- 
-
-4) 案例总结
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps21.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps22.png)创建VUE实例时: **el(****挂载点****) , data(****数据****) , methods(****方法****) v-on** 指令的作用是绑定事件,简写为 **@**
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps23.png)方法中使用**this**关键字,获取data中的数据
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps24.png)**v-text** 与 **{{}}** 的作用都是用来 设置元素的文本值
-
-### **5.** ***\*v-show\*******\*指令\****
+### **5.** v-show指令
 
 作用: v-show指令, 根据真假值,切换元素的显示状态
 
-### ***\*页面准备\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps25.png) |
-
- 
-
-
-
- 
-
 **代码示例**
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
 
+        <img v-show = "isShow" src="./img/c..JPG">
+    </div>
+</body>
+<script>
+var vm = new Vue({
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps26.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps27.png)
-
- 
+el:"#app",
+data:{
+    //true就能显示  false不显示
+    isShow :false,
+    age:19,
+},
+})
+</script>
+</html>
+```
 
 **v-show** **指令总结**
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps28.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps29.png)原理是修改元素的display,实现显示或者隐藏指令后面的内容,最终会解析为 布尔值
+- 原理是修改元素的display,实现显示或者隐藏
+- 指令后面的内容,最终会解析为 布尔值
+- 值为true 显示, 为false 则隐藏
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps30.png)值为true 显示, 为false 则隐藏
+- 数据改变之后,显示的状态会同步更新
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps31.png)数据改变之后,显示的状态会同步更新
 
-### **6.** ***\*v-if\**** ***\*指令\****
+### **6.** v-if指令
 
 作用: 根据表达值的真假,切换元素的显示和隐藏( 操纵dom 元素 )
 
-### ***\*代码示例\****
+***代码示例***
 
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps32.png) |
-
- 
-
-
-
- 
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <input type="button" value="切换状态" @click = "ChangeIf">
+        <img v-if = "isShow" src="./img/c..JPG">
+    </div>
+</body>
+<script>
+    var vm = new Vue({
+    
+    el:"#app",
+    data:{
+        isShow : true
+    },
+    methods: {
+        ChangeIf:function(){
+            this.isShow = !this.isShow;
+             }
+        }
+    })
+    </script>
+</html>
+```
 
 v-if 指令总结
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps33.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps34.png)v-if 指令的作用: 根据表达式的真假切换元素的显示状态本质是通过操作dom元素,来切换显示状态
+- v-if 指令的作用: 根据表达式的真假切换元素的显示状态
+- 本质是通过操作dom元素,来切换显示状态  (也就是他的隐藏是把img标签里的内容进行去掉，达到隐藏效果，他的显示则是显示img标签里的内容)
+- 表达式为true 元素存在与dom树,为false从dom树中移除
+- 频繁切换使用 v-show ,反之使用v-if
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps35.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps36.png)表达式为true 元素存在与dom树,为false从dom树中移除频繁切换使用 v-show ,反之使用v-if
-
- 
-
- 
-
-### **7.** ***\*v-bind\**** ***\*指令\****
+### **7.** v-bind指令
 
 作用: 设置元素的属性 （比如:src,title,class）
 
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+  
+    <div id="app">
+  <!-- 设置图片的tilte -->
+  <img src="./img/c..JPG"  :title="imgtitle" alt="">
+    </div>
+</body>
+<script>
+  var vm = new Vue({
+      el:"#app",
+      data :{
+          imgtitle : "崔巍最帅",
+      }
+  })
 
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps37.png)
+</script>
+</html>
+```
 
- 
+v-bind指令总结
 
-### ***\*代码示例\****
+- v-bind 指令的作用是： 为元素绑定属性
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps38.png) |
-
- 
+- 完整写法 v-bind:属性名 = 表达式，可以简写为 :属性名 = 表达式
 
 
-
- 
-
-**v-bind****指令总结**
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps39.png)v-bind 指令的作用是： 为元素绑定属性
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps40.png)完整写法 **v-bind:****属性名**，可以简写为 **:****属性名**
-
- 
-
-### **8.** ***\*v-for\**** ***\*指令\****
+### 8.v-for指令
 
 作用: 根据数据生成列表结构
 
-### ***\*语法结构\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps41.png) |
+语法结构
 
  
 
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps42.png)
-
- 
+```html
+</ul>
+</div>
+<div id="app">
+<ul>
+<li v-for="item in arr"></li>
+var VM = new Vue({ el:"#app", data:{
+arr:[1,2,3,4,5],
+objArr:[
+{name:"tom"},
+{name:"jack"}
+]
+}
+})
+```
 
 **代码示例**
 
- 
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps43.png)<body>
-
-<div id="app">
-
-
-
-<input type="button" value="添加数据" @click="add">
-
-<input type="button" value="移除数据" @click="remove">
-
-<ul>
-
-<!-- 在li标签中获取数组元素 -->
-
-<li v-for="(item,index) in arr">
-
-{{index+1 }}城市: {{item}}
-
-</li>
-
-</ul>
-
- 
-
-<!-- 使用h2标签显示
-
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">'
+        <ul>
+            <li v-for = "(item,index) in arr">
+                    {{index+1 }}城市: {{item}}
+            </li>
+        </ul>
+        <input type="button" value="添加数据" @click="add">
+        <input type="button" value="移除数据" @click="remove">
+        <!-- 使用h2标签显示
 v-for 结合 v-bind一起使用
-
 -->
-
 <h2 v-for="p in	persons" v-bind:title="p.name">
-
-{{p.name}}
-
-</h2>
-
-</div>
-
+        {{p.name}}
+        </h2>
+    </div>
+    
 </body>
-
- 
-
- 
-
-<script src="./vue.min.js"></script>
-
 <script>
+    var vm = new Vue({
 
-var VM = new Vue({ el:"#app", data:{
-
-//普通数组
-
-arr:["上海","北京","天津","杭州"],
-
-//对象数组persons:[
-
-{name:"尼古拉斯·赵四"},
-
-{name:"莱安纳多·小沈阳"}
-
-]
-
-},
-
-methods: {
-
-add:function(){
-
+  el:"#app",
+    data:{
+           arr: ["崔巍", "大头","胡斌"],
+           persons:[
+            {name : "崔巍"},
+            {nama : "大头"},
+            {name  : "胡斌"},
+           ]
+    },
+    methods: {
+        add:function(){
 //push 添加
-
 this.persons.push({name:"多利安·刘能"})
-
 },
+remove:function(){ 
+    this.persons.shift();
+       }
+    },
+ })
+</script>
+</html>
+```
 
-remove:function(){ this.persons.shift();
+### v-for指令总结
 
+- v-for 指令的作用: 根据数据生成列表结构
 
+- 数组经常和 v-for结合使用,数组有两个常用方法: push() 向数组末尾添加一个或多个元素
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps44.png)
+- shift() 把数组中的第一个元素删除
 
- 
+- 语法是: (item,index) in 数据
 
-### ***\*v-for\*******\*指令总结\****
+- item和index 可以结合其他指令一起使用
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps45.png)v-for 指令的作用: 根据数据生成列表结构
+- 数组的长度变化,会同步更新到页面上,是响应式的
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps46.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps47.png)数组经常和 v-for结合使用,数组有两个常用方法: push() 向数组末尾添加一个或多个元素
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps48.png)shift() 把数组中的第一个元素删除
+### **9.** v-on指令补充
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps49.png)语法是: (item,index) in 数据
+1. 传递自定义参数 : 函数调用传参
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps50.png)item和index 可以结合其他指令一起使用
+2. 事件修饰符: 对事件触发的方式进行限制
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps51.png)数组的长度变化,会同步更新到页面上,是响应式的
+代码示例
 
-### **9.** ***\*v-on\**** ***\*指令补充\****
-
-\1. 传递自定义参数 : 函数调用传参
-
-\2. 事件修饰符: 对事件触发的方式进行限制
-
-### ***\*代码示例\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps52.png) |
-
- 
-
-
-
- 
-
-**总结**
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps53.png)事件绑定方法,可以传入自定义参数
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps54.png)定义方法时,需要定义形参,来接收实际的参数
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps55.png)事件的后面跟上 .修饰符 可以对事件进行限制
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps56.png).enter 可以限制触发的按键为回车
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps57.png)事件修饰符有许多 使用时可以查询文档
-
-### **10.** ***\*MVVM\*******\*模式\****
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps58.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps59.png)MVVM 是Model-View-ViewModel 的缩写，它是一种基于前端开发的架构模式. MVVM模式将页面,分层了 M 、V、和VM ,解释为：
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps60.png)Model: 负责数据存储
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps61.png)View: 负责页面展示
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps62.png)View Model: 负责业务逻辑处理（比如Ajax请求等），对数据进行加工后交给视图展示
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps63.png) |
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps64.png) 
-
-
-
- 
-
- 
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps65.png)首先，我们将上图中的DOM Listeners和Data Bindings看作两个工具，它们是实现双向绑定的关键。
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps66.png)从View侧看，ViewModel中的DOM Listeners工具会帮我们监测页面上DOM元素的变化，如果有变化，则更改Model中的数据；
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps67.png)从Model侧看，当我们更新Model中的数据时，Data Bindings工具会帮我们更新页面中的DOM元素。
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps68.png)MVVM的思想,主要是为了让我们的开发更加的方便,因为MVVM提供了**数据的双向绑定**
-
-### **11.** ***\*v-mode\**** ***\*指令\****
-
-作用: 获取和设置表单元素的值(实现双向数据绑定)
-
-### ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps69.png)***\*双向数据绑定\****
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps70.png)单向绑定: 就是把Model绑定到View，当我们用JavaScript代码更新Model时，View就会自动更新。
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps71.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps72.png)双向绑定: 用户更新了View，Model的数据也自动被更新了，这种情况就是双向绑定。什么情况下用户可以更新View呢？
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps73.png)填写表单就是一个最直接的例子。当用户填写表单时，View的状态就被更新了，如果此时
-
-MVVM框架可以自动更新Model的状态，那就相当于我们把Model和View做了双向绑定：
-
-### ***\*代码示例\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps74.png) |
-
- 
-
-
-
- 
-
-**v-model****指令总结**
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps75.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps76.png)v-model 指令的作用是便捷的设置和获取表单元素的值绑定的数据会和表单元素值相关联
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps77.png)双向数据绑定
-
-## **1.2.5** ***\*实现简单记事本\****
-
-
-
-### **1.** ***\*功能介绍\****
-
-**2.** **新增内容**
-
-步骤
-
-\1. 生成列表结构(v-for 数组)
-
-\2. 获取用户输入(v-model 双向绑定)
-
-\3. 回车,新增数据(v-on .enter事件修饰符)
-
-\4. 页面布局不熟悉,可以通过审查元素的方式快速找到元素
-
- 
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps78.png)<body>
-
-<!-- VUE示例接管区域 -->
-
-<section id="app">
-
-
-
-<!-- 输入框 -->
-
-<header class="header">
-
-<h1>VUE记事本</h1>
-
- 
-
-<!-- v-on 绑定事件 -->
-
-<input v-model="inputValue" @keyup.enter="add" autofocus="autofocus" autocomplete="off" placeholder="输入日程"
-
-class="new-todo"/>
-
-</header>
-
- 
-
-
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-</label>
-
-<!-- 列表区域 -->
-
-<section class="main">
-
-<ul class="listview">
-
-<li class="todo" v-for="(item,index) in list">
-
-<div class="view">
-
-<span class="index">{{index+1}}</span> <label>{{item}}
-
- 
-
- 
-
-<button class="destroy"></button>
-
-</div>
-
-</li>
-
-</ul>
-
-</section>
-
-</section>
-
-
-
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <!-- 设置参数 -->
+            <input type="button" value="点一点" @click="showTime(666,'感谢老铁的穿云箭!')"/>
+        <!-- 事件修饰符 -->
+        <input type="text" @keyup.enter="hi">
+    </div>
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
 <script>
+var vm = new Vue({
 
-var VM = new Vue({ el:"#app", data:{
-
-list:["写代码","吃饭","睡觉"],
-
-inputValue:"996还是997"
-
-},
-
-methods: {
-
-//新增方法add:function(){
-
-//将用户输入的内容添加到list this.list.push(this.inputValue);
-
-}
-
-}
-
+    el:"#app",
+    data() {
+    },
+    methods: {
+        showTime : function(p1,p2){
+            console.log(p1);
+             console.log(p2);
+        },
+        hi : function(){
+            alert("宝贝真美")
+        }
+    },
 })
 
 </script>
+</html>
+```
+
+**总结**
+
+事件绑定方法,可以传入自定义参数
+
+定义方法时,需要定义形参,来接收实际的参数
+
+事件的后面跟上 .修饰符 可以对事件进行限制，可以限制键盘上的键
+
+ @keyup.enter.enter 可以限制触发的按键为回车，点击回车会进行相关的操作
+
+事件修饰符有许多 使用时可以查询文档
+
+### **10.** MVVM模式
+
+- MVVM 是Model-View-ViewModel 的缩写，它是一种基于前端开发的架构模式. 
+
+- MVVM模式将页面,分层了 M 、V、和VM ,解释为：
+
+​                  Model: 负责数据存储
+
+​                  View: 负责页面展示
+
+​                  View Model: 负责业务逻辑处理（比如Ajax请求等），对数据进行加工后交给视图展示
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+/*
+   MVVM:前端的架构模式
+   M：Model 负责存储数据
+   V：View:负责页面展示
+   VM：ViewModel  负责业务处理（MVM模式的核心）
+*/
+</style>
+<body>
+    <div id="app">
+        <!-- View  视图部分 -->
+        <h2>{{name}}</h2>
+    </div>
+</body>
+<script src="./js/vue.min.js"></script>
+<script>
+    // 创建的vue实例就是  VM ViewModel
+    var vm  = new Vue({
+        el:"#app",
+        // data  就是MVVM中的 Model
+        data :{
+            name : hello
+        }
+    })
+</script>
+</html>
+```
+
+![image-20220809152312213](Vue.js.assets/image-20220809152312213.png)
+
+- 首先，我们将上图中的DOM Listeners和Data Bindings看作两个工具，它们是实现双向绑定的关键。
 
 
+1.  从View侧看，ViewModel中的DOM Listeners工具会帮我们监测页面上DOM元素的变化，如果有变化，则更改Model中的数据；
 
-### **3.** ***\*删除内容\****
+2.  从Model侧看，当我们更新Model中的数据时，Data Bindings工具会帮我们更新页面中的DOM元素。
+
+
+MVVM的思想,主要是为了让我们的开发更加的方便,因为MVVM提供了**数据的双向绑定**
+
+### **11.** v-model指令
+
+作用: 获取和设置表单元素的值(实现双向数据绑定)
+
+- 双向数据绑定：
+
+​              单向绑定: 当model绑定到View上，model发生变化，view也会随之发生变化
+
+​              双向绑定: view视图发生变化，model也随之发生变化。
+
+- 什么情况下用户可以更新View呢？
+
+​                             填写表单就是一个最直接的例子。当用户填写表单时，View的状态就被更新了，如果此时MVVM框架可以自动更新Model的状态，那就相当于我们把Model和View做了双向绑定：
+
+代码示例：
+
+单向绑定：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <!--  -->
+        <input type="text" :value="message"> <br>
+        <input type="button" value="你点点呗" @click = "update">
+
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el:"#app",
+    data :{
+        message : "崔巍最帅"
+    },
+    methods: {
+        update :function(){
+            this.message = "崔巍帅吗？"
+        }
+    },
+})
+</script>
+</html>
+```
+
+双向数据绑定;
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+            <input type="text" v-model ="message">
+            <input type="text" v-model ="password">
+            <h1 v-text = "message"></h1>
+    </div>
+</body>
+<script>
+new Vue({
+    el:"#app",
+    data :{
+        message: "我爱你老崔",
+        password :"123456999"
+    }
+})
+</script>
+</html>
+```
+
+v-model指令总结:
+
+- v-model 指令的作用是便捷的设置和获取表单元素的值
+- 绑定的数据会和表单元素值相关联
+- 双向数据绑定
+
+
+## **1.2.5** 实现简单记事本
 
 步骤
 
-\1. 点击删除指定的内容( 根据索引删除元素)
+1. 生成列表结构(v-for 数组)
 
-\2. 在methods中添加一个删除的方法,使用splice函数进行删除
+2. 获取用户输入(v-model 双向绑定)
 
+3. 回车,新增数据(v-on .enter事件修饰符)
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps79.png) |
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps80.png) 
+4. 页面布局不熟悉,可以通过审查元素的方式快速找到元素
 
 
 
- 
+代码实例：
 
- 
+```html
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>小黑记事本</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="../css/index.css" />
+  </head>
 
-### **4.** ***\*统计操作\****
+  <body>
+    <!-- VUE示例接管区域 -->
+    <section id="app">
+      <!-- 输入框 -->++```````
+      <header class="header">
+        <h1>VUE记事本</h1>
+        <input
+          autofocus="autofocus"
+          autocomplete="off"
+          placeholder="输入日程"
+          class="new-todo"
+          v-model="inputValue"
+          @keyup.enter="add"
+        />
+      </header>
 
-步骤
+      <!-- 列表区域 -->
+      <section class="main">
+        <ul class="listview">
+          <!-- 1.使用v-for指令 生成列表结构 -->
+          <li class="todo" v-for="(item,index) in list">
+            <div class="view">
+              <span class="index">{{index+1}}</span> <label>{{item}}</label>
+              <!-- 2.删除操作 传递index -->
+              <button class="destroy" @click="remove(index)"></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <!-- 统计和清空 -->
+      <footer class="footer">
+        <span class="todo-count">
+          <strong>{{list.length}}</strong> items left
+        </span>
+        <button class="clear-completed" @click="clear()">
+          Clear
+        </button>
+      </footer>
+    </section>
+  </body>
+  <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var VM = new Vue({
+      el: "#app",
+      data: {
+        list: ["写代码", "吃饭", "睡觉", "打CSGO"],
+        inputValue: "996还是997",
+      },
+      methods: {
+        //新增日程方法
+        add: function () {
+          //将用户输入的内容添加到list
+          this.list.push(this.inputValue);
+        },
+        remove: function (index) {
+          console.log(index);
+          //使用 splice(元素的索引,删除几个)
+          this.list.splice(index, 1);
+        },
+        //清空操作
+        clear: function () {
+          this.list = [];
+        },
+      },
+    });
+  </script>
+</html>
 
-\1. 统计页面信息的个数,就是列表中的元素的个数.
+```
 
-\2. 获取 list数组的长度,就是信息的个数
+# **1.3** axios
 
+## **1.3.1** Ajax回顾
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps81.png) |
-
- 
-
-
-
- 
-
-总结:
-
-\1. 基于数据的开发方式
-
-\2. v-text设置的是文本,可以使用简化方式 {{}}
-
-### **5.** ***\*清空数据\****
-
-步骤:
-
-\1. 点击清除所有信息
-
-\2. 本质就是清空数组
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps82.png)
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps83.png) |
-
- 
-
-
-
- 
-
-# **1.3** ***\*axios\****
-
-## **1.3.1** ***\*Ajax\*******\*回顾\****
-
-### **1.3.1.1** ***\*什么是\*******\*Ajax?\****
+### **1.3.1.1** 什么是Ajax?
 
 Ajax 是指一种创建交互式网页应用的开发技术。Ajax = 异步 JavaScript 和 XML。
 
-### **1.3.1.2** ***\*Ajax\*******\*的作用\****
+### **1.3.1.2** Ajax的作用
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps84.png)Ajax 可以使网页实现异步更新。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新（局部更新）。传统的网页如果需要更新内容，必须重载整个网页页面。
+- ​    Ajax 可以使网页实现异步更新。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新（局部更新）。传统的网页如果需要更新内容，必须重载整个网页页面。
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps85.png)简单记: Ajax 是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术, 维护用户体验性, 进行网页的局部刷新.
+- 简单记: Ajax 是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术, 维护用户体验性, 进行网页的局部刷新.
 
-### **1.3.1.3** ***\*异步与同步\****
+  ![image-20220809184025244](Vue.js.assets/image-20220809184025244.png)
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps86.png)浏览器访问服务器的方式
+像这样，我在搜索手机的时候，会出现很多关于手机的一些的商品，但是总体的页面没有改变，还是主页，而不是跳转到了关于手机的页面。
 
+### **1.3.1.3** 异步与同步
 
+- 浏览器访问服务器的方式：
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps87.jpg) |
+同步访问:  客户端必须等待服务器端的响应,在等待过程中不能进行其他操作
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps88.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps89.png)同步访问:  客户端必须等待服务器端的响应,在等待过程中不能进行其他操作异步访问: 客户端不需要等待服务的响应,在等待期间,浏览器可以进行其他操作
+异步访问: 客户端不需要等待服务的响应,在等待期间,浏览器可以进行其他操作
 
+<img src="Vue.js.assets/image-20220809184354734.png" alt="image-20220809184354734" style="zoom:67%;" />
 
+## **1.3.1** axios介绍
 
-### **1.3.1.4** ***\*案例演示\****
+VUE中结合网络数据进行应用的开发：
 
-ajax.jsp
+- 目前十分流行网络请求库,专门用来发送请求,其内部还是ajax,进行封装之后使用更加方便
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps90.png) |
-
- 
+- axios作用: 在浏览器中可以帮助我们完成 ajax异步请求的发送.
 
 
+Vue2.0之后，尤雨溪推荐大家用axios替换JQuery ajax
 
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps91.png)
-
- 
-
-servlet
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps92.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps93.png)
-
- 
-
- 
-
-## **1.3.1** ***\*axios\*******\*介绍\****
-
-VUE中结合网络数据进行应用的开发
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps94.png)目前十分流行网络请求库,专门用来发送请求,其内部还是ajax,进行封装之后使用更加方便
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps95.png)axios作用: 在浏览器中可以帮助我们完成 ajax异步请求的发送.
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps96.png)Vue2.0之后，尤雨溪推荐大家用axios替换JQuery ajax
-
-## **1.3.2** ***\*axios\*******\*入门\****
+## **1.3.2** axios入门
 
 使用步骤:
 
-\1. 导包
+1. 导包
+
+```html
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+```
+
+2. 请求方式,以GET和POST举例
+
+GET
+
+```
+axios.get(地址?key=value&key2=value2).then(function(response){},function(error){});
+```
+
+ ![image-20220809193109892](Vue.js.assets/image-20220809193109892.png)
 
 
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps97.png) |
+POST
+
+```html
+axios.post(地址,{key:value,key2:value2}).then(function(response){},function(error){})
+```
+
+3. 根据接口文档, 访问测试接口,进行测试
+
+**接口1：随机笑话：**
+
+```
+ 请求地址:https://autumnfish.cn/api/joke/list 
+ 请求方法:get
+ 请求参数:num(笑话条数,数字) 响应内容:随机笑话
+ 接口2:用户注册
+```
+
+代码示例
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/axios.min.js"></script>
+<body>
+    <input type="button" value="get请求" id="get">
+</body>
+<script>
+/*
+随机笑话接口测试：
+ 请求地址:https://autumnfish.cn/api/joke/list 
+ 请求方法:get
+ 请求参数:num(笑话条数,数字) 响应内容:随机笑话
+ 接口2:用户注册
+ */
+document.getElementById("get").onclick = function(){
+    axios.get("https://autumnfish.cn/api/joke/list?num=2").then(
+        //请求成功
+        function(response){
+            console.log(response)
+            //请求失败
+        },function(error){
+            console.log(error)
+        }
+    )
+}
+</script>
+</html>
+```
+
+**接口2：用户注册**
+
+```
+请求地址:https://autumnfish.cn/api/user/reg 
+请求方法:post
+请求参数:username(用户名,字符串) 
+响应内容:注册成功或失败
+```
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/axios.min.js"></script>
+<body>
+    <!-- 设置一个按钮 -->
+    <input type="button" value="Pst请求" id="post">
+</body>
+<script>
+    /*
+    请求地址:https://autumnfish.cn/api/user/reg 
+    请求方法:post
+    请求参数:username(用户名,字符串) 
+    响应内容:注册成功或失败
+    */
+    // 通过id获取按钮，并添加事件
+document.getElementById("post").onclick =  function(){
+    axios.get("https://autumnfish.cn/api/user/reg",{username : "cuiwei"})
+    .then (function(resp){
+            console.log(resp)
+    },function(error){
+        console.log(error)
+    })
+}
+</script>
+</html>
+```
+
+## **1.3.3** axios总结
+
+1. axios 必须导包才能使用
+
+2. 使用get或者post方法就可以发送请求
+
+3. then方法中的回调函数会在请求成功或者请求失败的时候触发
+
+4. 通过回调函数的形参可以获取响应的内容或者错误信息
+
+## **1.3.4** **获取笑话案例**
+
+通过vu+axios 完成一个获取笑话的案例.
+
+接口随机获取一条笑话
+
+
+
+ 
+
+代码示例
+
+
+
+
+
+案例总结
+
+1. axios回调函数中this指向已经改变,无法访问data中的数据
+
+2. 解决方案: 将this进行保存,回调函数中直接使用保存的this即可
+
+## 1.3.5天气查询案例
+
+### **1.3.5.1** 需求分析
+
+- 功能分析: 回车查询
+
+     1.输入内容，点击回车（v-on.enter）
+
+     2.访问接口，查询数据（axios v-model）
+
+     3.访问数据，渲染数据
+
+### **1.3.5.2** 接口文档
 
  
 
@@ -996,165 +1210,7 @@ VUE中结合网络数据进行应用的开发
 
  
 
-\2. 请求方式,以GET和POST举例
-
-### ***\*GET\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps98.png) |
-
- 
-
-
-
- 
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps99.png) |
-
- 
-
-
-
- 
-
- 
-
-**POST**
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps100.png) |
-
- 
-
-
-
- 
-
-\3. 根据接口文档, 访问测试接口,进行测试
-
-### ***\*接口\*******\*1:\*******\*随机笑话\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps101.png) |
-
- 
-
-
-
- 
-
-**接口****2:****用户注册**
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps102.png)
-
- 
-
-**代码示例**
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps103.png) |
-
- 
-
-
-
- 
-
-**1.3.3** **axios****总结**
-
-\1. **axios** **必须导包才能使用**
-
-\2. **使用****get****或者****post****方法****,****就可以发送请求**
-
-\3. **then****方法中的回调函数****,****会在请求成功或者请求失败的时候触发**
-
-\4. **通过回调函数的形参可以获取响应的内容****,****或者错误信息**
-
-**1.3.4** **获取笑话案例**
-
-
-
-通过vue+axios 完成一个获取笑话的案例.
-
-### ***\*接口\*******\*:\**** ***\*随机获取一条笑话\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps104.png) |
-
- 
-
-
-
- 
-
-**代码示例**
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps105.png) |
-
- 
-
-
-
- 
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps106.png)**案例总结**
-
-\1. axios回调函数中this指向已经改变,无法访问data中的数据
-
-
-
-\2. 解决方案: 将this进行保存,回调函数中直接使用保存的this即可
-
-## **1.3.5** ***\*天气查询案例\****
-
-### **1.3.5.1** ***\*需求分析\****
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps107.png)功能分析: 回车查询
-
-\1. ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps108.png)输入内容,点击回车 (v-on.enter)
-
-\2. ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps109.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps110.png)访问接口,查询数据 (axios v-model) 3.返回数据,渲染数据
-
-### **1.3.5.2** ***\*接口文档\****
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps111.png) |
-
- 
-
-
-
- 
-
-**1.3.5.3** **案例演示****自定义****JS****文件**
+**1.3.5.3** 案例演示自定义JS文件
 
 作为一个标准的应用程序,我们将创建VUE实例的代码,抽取到main.js 文件中
 
@@ -1162,43 +1218,21 @@ main.js
 
 
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps112.png) |
-
- 
 
 
+### **1.3.5.4** 案例总结
 
+1. 应用的逻辑代码,建议与页面进行分离,使用单独的JS编写
 
+2. axios回调函数中的 this的指向改变,无法正常使用, 需要另外保存一份
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps113.png)
+3. 服务器返回的数据比较的复杂时,获取数据时要注意层级结构
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps114.png) |
-
- 
-
-
-
- 
-
-### **1.3.5.4** ***\*案例总结\****
-
-\1. 应用的逻辑代码,建议与页面进行分离,使用单独的JS编写
-
-\2. axios回调函数中的 this的指向改变,无法正常使用, 需要另外保存一份
-
-\3. 服务器返回的数据比较的复杂时,获取数据时要注意层级结构
-
-## **1.3.6** ***\*解决页面闪烁问题\****
+## **1.3.6** 解决页面闪烁问题
 
 我们发现访问天气预报案例页面时, 使用插值表达式的地方出现了闪烁问题,如何解决呢?
 
-### ***\*v-cloak\*******\*指令\****
+### v-cloak指令
 
 作用: 解决插值表达式闪烁问题
 
@@ -1208,25 +1242,13 @@ main.js
 
 
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps115.png)
-
  
 
 2) 在id为app的div中添加 v-cloak
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps116.png) |
-
  
 
-
-
- 
-
-# **1.4** ***\*computed\**** ***\*计算属性\****
+# **1.4** computed计算属性
 
 ## **1.4.1** ***\*什么是计算属性\****
 

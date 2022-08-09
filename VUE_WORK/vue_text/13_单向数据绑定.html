@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <!--  -->
+        <input type="text" :value="message"> <br>
+        <input type="button" value="你点点呗" @click = "update">
+
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el:"#app",
+    data :{
+        message : "崔巍最帅"
+    },
+    methods: {
+        update :function(){
+            this.message = "崔巍帅吗？"
+        }
+    },
+})
+</script>
+</html>

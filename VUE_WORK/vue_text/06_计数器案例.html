@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/inputNum.css">
+</head>
+<body>
+  <div id="#app">
+      <!-- Class属性是为了  引用你页面的类样式 -->
+    <input type="button" class="btn btn_plus" @click="add">
+    <!-- span标签的作用：组合文档中的行内元素。 -->
+     <span>{{num}}</span>
+    <input type="button" class="btn btn_minus" @click="sub">
+  </div>
+</body>
+<script src="./js/vue.min.js"></script>
+<script>
+var vm = new Vue({
+    el : "#app",
+    data :{
+      num:1
+    },
+    methods: {
+        add : function(){
+            if(this.num <10){
+                this.num++;
+            }
+            else{
+              alert("别点了，最大了")
+            }
+        },
+        sub: function(){
+            if(this.num>0){
+               this.num--;
+            }
+            else{
+                alert("别点了，最小了");
+            }
+        },
+    },
+});
+
+</script>
+</html>

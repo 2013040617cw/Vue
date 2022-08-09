@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <!-- 设置参数 -->
+            <input type="button" value="点一点" @click="showTime(666,'感谢老铁的穿云箭!')"/>
+        <!-- 事件修饰符 -->
+        <input type="text" @keyup.enter="hi">
+    </div>
+</body>
+<script>
+var vm = new Vue({
+
+    el:"#app",
+    data() {
+    },
+    methods: {
+        showTime : function(p1,p2){
+            console.log(p1);
+             console.log(p2);
+        },
+        hi : function(){
+            alert("宝贝真美")
+        }
+    },
+})
+
+</script>
+</html>

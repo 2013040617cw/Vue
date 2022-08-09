@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <input type="button" value="点击按钮" v-on:click = "show">
+
+        <!-- 简写方式 -->
+        <input type="button" value="点击按钮" @click = "show">
+
+        <!-- 双击事件 -->
+        <input type="button" value="点击按钮" @dblclick = "show">
+
+        <!-- 绑定事件，修改内容 -->
+        <h1 @click = "ChangeFood">{{food}}</h1>
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el :"#app",
+    data : {
+        food : "火锅真好吃！！"
+    },
+    methods: {
+        show :function(){
+            alert("我是it崔巍")
+        },
+        ChangeFood : function(){
+            this.food = this.food + ",明天还要吃"
+        },
+    },
+});
+
+
+</script>
+</html>

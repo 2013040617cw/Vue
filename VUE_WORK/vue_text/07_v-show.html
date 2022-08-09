@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+
+        <img v-show = "isShow" src="./img/c..JPG">
+    </div>
+</body>
+<script>
+var vm = new Vue({
+
+el:"#app",
+data:{
+    //true就能显示  false不显示
+    isShow :false,
+    age:19,
+},
+})
+</script>
+</html>
