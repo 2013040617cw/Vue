@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <it-cuiwei></it-cuiwei>
+    </div>
+</body>
+<script>
+    //定义一个全局组件
+    //组件名的命名规则  一般短横线进行连接，左边边是公司名字，右边为组件的作用名称
+    Vue.component("it-cuiwei",{
+    template: "<div>HTML<h1 @click = 'hello'>{{msg}}</h1></div>", //template模板只能有一个根元素
+    //组件中的data是一个函数
+    data(){
+        return{
+            msg:"这是组件中的数据"
+        }
+      },
+      methods:{
+          hello(){
+              alert("你好！！！")
+          }
+      }
+    })
+    
+    var vm  = new Vue({
+        el:"#app",
+        data:{},
+        methods: {
+            
+        },
+    })
+
+</script>
+</html>

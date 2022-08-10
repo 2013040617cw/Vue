@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <h1>{{a*b}}</h1> -->
+        <!-- <h1>{{res()}}</h1>
+        <h1>{{res()}}</h1> -->
+
+        <h1>{{res2}}</h1>
+        <h1>{{res2}}</h1>
+    </div>
+</body>
+<script src="./js/vue.min.js"></script>
+<script>
+var vm = new Vue({
+
+    el:"#app",
+    data:{
+        a:10,
+        b:20
+    },
+    methods: {
+        res : function(){
+            console.log("res方法执行了")
+            return this.a*this.b
+        }
+    },
+    //使用计算属性，进行优化。减少运算的次数，用于重复的运算
+    computed:{
+        res2:function(){
+            console.log("res方法执行了")
+            return this.a*this.b
+        }
+    }
+})
+</script>
+</html>

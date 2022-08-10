@@ -1172,17 +1172,65 @@ document.getElementById("post").onclick =  function(){
 
 通过vu+axios 完成一个获取笑话的案例.
 
-接口随机获取一条笑话
+接口：随机获取一条笑话
 
-
-
- 
+```
+请求地址:https://autumnfish.cn/api/joke 
+请求方法:get
+请求参数:无
+响应内容:随机笑话
+```
 
 代码示例
 
-
-
-
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<body>
+    <!-- 设置一个按钮，并绑定事件 -->
+    <div id="app">
+            <input type="button" value="点击获取一个笑话" @click = "GetJoke"><br>
+            <p>{{joke}}</p>
+    </div>
+  
+</body>
+<script>
+    /*
+    请求地址:https://autumnfish.cn/api/joke 
+    请求方法:get
+    请求参数:无
+    响应内容:随机笑话
+    */
+    var vm  = new Vue({
+        el:"#app",
+        data:{
+            joke : "崔巍帅吗？"
+        },
+        methods: {
+            GetJoke: function(){
+                var that = this;
+                axios.get("https://autumnfish.cn/api/joke").then(
+                    function(resp){
+                            console.log(resp.data)
+                            that.joke = resp.data
+                    },function(error){
+                        console.log("error")
+                    }               
+                )
+           }
+        },
+    })
+</script>
+</html>
+```
 
 案例总结
 
@@ -1190,47 +1238,7 @@ document.getElementById("post").onclick =  function(){
 
 2. 解决方案: 将this进行保存,回调函数中直接使用保存的this即可
 
-## 1.3.5天气查询案例
-
-### **1.3.5.1** 需求分析
-
-- 功能分析: 回车查询
-
-     1.输入内容，点击回车（v-on.enter）
-
-     2.访问接口，查询数据（axios v-model）
-
-     3.访问数据，渲染数据
-
-### **1.3.5.2** 接口文档
-
- 
-
-
-
- 
-
-**1.3.5.3** 案例演示自定义JS文件
-
-作为一个标准的应用程序,我们将创建VUE实例的代码,抽取到main.js 文件中
-
-main.js
-
-
-
-
-
-### **1.3.5.4** 案例总结
-
-1. 应用的逻辑代码,建议与页面进行分离,使用单独的JS编写
-
-2. axios回调函数中的 this的指向改变,无法正常使用, 需要另外保存一份
-
-3. 服务器返回的数据比较的复杂时,获取数据时要注意层级结构
-
-## **1.3.6** 解决页面闪烁问题
-
-我们发现访问天气预报案例页面时, 使用插值表达式的地方出现了闪烁问题,如何解决呢?
+## 1.3.5 解决页面闪烁问题
 
 ### v-cloak指令
 
@@ -1240,249 +1248,421 @@ main.js
 
 1) 添加样式
 
+```
+<style>
+/* 通过属性选择器,设置 添加了v-cloak */ [v-cloak] {
+display: none;
+}
+</style>
+```
 
-
- 
-
-2) 在id为app的div中添加 v-cloak
-
- 
+2) 在div中添加 v-cloak
 
 # **1.4** computed计算属性
 
-## **1.4.1** ***\*什么是计算属性\****
-
-在Vue应用中，在模板中双向绑定一些数据或者表达式，但是表达式如果过长，或者逻辑更为复杂时，就会变得臃肿甚至难以维护和阅读，比如下面的代码:
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps117.png) |
-
- 
-
-
-
- 
+## **1.4.1** 什么是计算属性
 
 computed 的作用: 减少运算次数, 缓存运算结果. 运用于重复相同的计算.
 
-## **1.4.1** ***\*代码示例\****
+## **1.4.1** 代码示例
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <h1>{{a*b}}</h1> -->
+        <!-- <h1>{{res()}}</h1>
+        <h1>{{res()}}</h1> -->
 
+        <h1>{{res2}}</h1>
+        <h1>{{res2}}</h1>
+    </div>
+</body>
+<script src="./js/vue.min.js"></script>
+<script>
+var vm = new Vue({
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps118.png) |
+    el:"#app",
+    data:{
+        a:10,
+        b:20
+    },
+    methods: {
+        res : function(){
+            console.log("res方法执行了")
+            return this.a*this.b
+        }
+    },
+    //使用计算属性，进行优化。减少运算的次数，用于重复的运算
+    computed:{
+        res2:function(){
+            console.log("res方法执行了")
+            return this.a*this.b
+        }
+    }
+})
+</script>
+</html>
+```
 
- 
+computed属性，就是你在运算的过程中，你运算的结果相同时，他的计算过程只执行一次。
 
+### **1.4.2** computed总结
 
+1. 定义函数也可以实现与 计算属性相同的效果,都可以简化运算。
 
+2. 不同的是**计算属性是基于它们的响应式依赖进行缓存的**。只在相关响应式依赖发生改变时它们才会  重新求值。
 
+# 1.5ﬁlter过滤器
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps119.png)
+## **1.5.1** ***什么是过滤器***
 
- 
+   过滤器是对即将显示的数据做进一步的筛选处理，然后进行显示，值得注意的是过滤器并没有改变原来的数据，只是在原数据的基础上产生新的数据。
 
-**1.4.2** **computed****总结**
+  数据加工车间,对值进行筛选加工.
 
-\1. 定义函数也可以实现与 计算属性相同的效果,都可以简化运算。
+## **1.5.2** 过滤器使用位置
 
-\2. 不同的是**计算属性是基于它们的响应式依赖进行缓存的**。只在相关响应式依赖发生改变时它们才会  重新求值。
+1. 插值表达式内
 
-# **1.5** ***\*ﬁlter\**** ***\*过滤器\****
+```
+{{ msg | filterA }}	
+msg是需要处理的数据, filterA是过滤器, | 这个竖线是管道,通过这个管道将数据传输给过滤器进行过滤 加工操作
+```
 
-## **1.5.1** ***\*什么是过滤器\****
+2. v-bind绑定的值的地方。
 
-过滤器是对即将显示的数据做进一步的筛选处理，然后进行显示，值得注意的是过滤器并没有改变原  来的数据，只是在原数据的基础上产生新的数据。
+```
+<h1 v-bind:id=" msg | filterA"> {{ msg }} </h1>
+```
 
-数据加工车间,对值进行筛选加工.
+## **1.5.3** 过滤器
 
-## **1.5.2** ***\*过滤器使用位置\****
-
-\1. 双括号插值内
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps120.png) |
-
- 
-
-
-
- 
-
-\2. v-bind绑定的值的地方。
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps121.png) |
-
- 
-
-
-
- 
-
-## **1.5.3** ***\*过滤器\****
-
-### **1.** ***\*局部过滤器\****
+### **1.** 局部过滤器
 
 需求: 通过过滤器给电脑价格前面 添加一个符号¥
 
+ 代码示例：
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <p>电脑价格:{{price | addIcon}}</p>
+    </div>
+   
+</body>
+<script>
+//局部过滤器  在Vue实例的内部创建filter
+var vm= new Vue({
+ el:"#app",  //挂载点
+ data:{
+     //model
+     price:200
+ },
+ methods: {  //方法
+     
+ },
+ computed:{ //计算属性
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps122.png) |
+ },
+ //局部过滤器
+ filters:{ 
+     //定义处理函数  value:price
+     addIcon(value){
+         return "￥" + value
+     }
+ }
+})
+</script>
+</html>
+```
 
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps123.png)
-
- 
-
-### **2.** ***\*全局过滤器\****
+### **2.** 全局过滤器
 
 需求: 将用户名开头字母大写
 
+代码示例：
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+/**
+将用户名开头字母大小写
+*/
+</style>
+<body>
+    <div id="app">
+        <p>{{user.name}}</p>
+    </div>
+</body>
+<script src="./js/vue.min.js"></script>
+<script>
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps124.png) |
+    //创建Vue实例之前，创建全局过滤器
+    Vue.filter("changeName",function(value) {
+        //将姓名的开头字母大小写
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    });
+    var vm = new Vue({
+        el:"#app",
+        data:{
+            user:{name:"tom"}
+        }
+    })
+</script>
+</html>
+```
 
- 
+## **1.5.4** 总结
 
+1. 过滤器常用来处理文本格式化的操作。过滤器可以用在两个地方：**双花括号插值和** **v-bind** **表达式**
 
+2. 过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符号指示
 
- 
+# **1.6** watch侦听器
 
-## **1.5.4** ***\*总结\****
-
-\1. 过滤器常用来处理文本格式化的操作。过滤器可以用在两个地方：**双花括号插值和** **v-bind** **表达式**
-
-\2. 过滤器应该被添加在 JavaScript 表达式的尾部，由“管道”符号指示
-
-# **1.6** ***\*watch\**** ***\*侦听器\****
-
-## **1.6.1** ***\*什么是侦听器\****
+## **1.6.1** 什么是侦听器
 
 Vue.js 提供了一个方法 watch，它用于观察Vue实例上的数据变动。
 
 作用: 当你有一些数据需要随着其它数据变动而变动时，可以使用侦听属性
 
-## **1.6.2** ***\*案例演示\****
+例如：侦听count值得变化
+
+代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <h2>计数器：{{count}}</h2>
+        <input type="button" value = "点我+1" @click = "count++">
+    </div>
+</body>
+<script>
+var vm = new Vue({
+    el:"#app",
+    data:{
+        count:1
+    },
+    watch:{
+        //监测属性的变化
+        count:function(nval,oval){  //参数一是原来的值  参数二是新的值
+            alert("计数器发生变化：" + nval + "变化为：" + oval)
+        }
+    }
+})
+</script>
+</html>
+```
+
+注意：这里watch里的count必须和data得count保持一致。
+
+## **1.6.2** 案例演示
 
 需求: 监听姓名变化,实时显示
 
+代码示例：
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+        <label> 名：
+            <input type="text" v-model = "firstName">
+        </label>
+       <label>姓：
+            <input type="text" v-model = "lastName">
+        </label>
+       {{fullName}}
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps125.png) 
+    </div>
+</body>
+<script>
+var vm  =new Vue({
+    el:"#app",
+    data:{
+        firstName:"",
+        lastName:"",
+        fullName:""
+    },
+    watch:{
+        firstName:function(nval,oval){
+            this.fullName = nval + " " + this.lastName
+        },
+        lastName:function(nval,oval){
+            this.fullName = this.firstName + " " + nval
+        }
 
- 
+    }
+})
+</script>
+</html>
+```
 
+运行结果：
 
+![image-20220810212740167](Vue.js.assets/image-20220810212740167.png)
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps126.png) |
+# **1.7** Component组件
 
- 
+## **1.7.1** 组件介绍
 
+​    组件（Component）是自定义封装的功能。在前端开发过程中，经常出现多个网页的功能是重复的，而且很多不同的页面之间，也存在同样的功能。
 
-
- 
-
- 
-
-# **1.7** ***\*Component\**** ***\*组件\****
-
-## **1.7.1** ***\*组件介绍\****
-
-组件（Component）是自定义封装的功能。在前端开发过程中，经常出现多个网页的功能是重复的，而且很多不同的页面之间，也存在同样的功能。
-
-我们将相同的功能进行抽取,封装为组件,这样，前端人员就可以在组件化开发时，只需要书写一次代 码，随处引入即可使用。
+   我们将相同的功能进行抽取,封装为组件,这样，前端人员就可以在组件化开发时，只需要书写一次代 码，随处引入即可使用。
 
 组件系统让我们可以用独立可复用的小组件来构建大型应用，几乎任意类型的应用的界面都可以抽象  为一个组件树
 
+![image-20220810212751067](Vue.js.assets/image-20220810212751067.png)
 
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps127.png) 
 
- 
+**Vue的组件有两种:全局组件 和 局部组件**
 
- 
-
- 
-
-### ***\*vue\*******\*的组件有两种\*******\*:\**** ***\*全局组件 和 局部组件\****
-
-**1.7.2** **全局组件**
+## **1.7.2** **全局组件**
 
 语法格式:
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps128.png) |
-
- 
-
-
-
- 
+```html
+Vue.component("组件名称", {
+template: "html代码",	// 组件的HTML结构代码
+data(){ //组件数据return {}
+},
+methods: {	// 组件的相关的js方法方法名(){
+// 逻辑代码
+   }
+  }
+})
+```
 
 注意:
 
-\1. 组件名以小写开头，采用短横线分割命名: 例如 **hello-Word**
+1. 组件名以小写开头，采用短横线分割命名: 例如 **hello-Word**
 
-\2. 组件中的data 必须是一个函数,注意与Vue实例中的data区分
+2. 组件中的data 必须是一个函数,注意与Vue实例中的data区分
 
-\3. 在template模板中, 只能有一个根元素
+3. 在template模板中, 只能有一个根元素  意思就是：
 
+   ```html
+    template: "<div>HTML<h1 @click = 'hello'>{{msg}}</h1></div>",
+   ```
 
+   像这样，内容才会都显示：
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps129.png) |
+   ![image-20220810220452177](Vue.js.assets/image-20220810220452177.png)
 
- 
+如果你采用：
 
+```html
+ template: "<div>HTML></div>",<h1 @click = 'hello'>{{msg}}</h1>",
+```
 
+页面中只显示HTML
 
+ 代码示例：
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps130.png)
+        <it-cuiwei></it-cuiwei>
+    </div>
+</body>
+<script>
+    //定义一个全局组件
+    //组件名的命名规则  一般短横线进行连接，左边边是公司名字，右边为组件的作用名称
+    Vue.component("it-cuiwei",{
+    template: "<div>HTML<h1 @click = 'hello'>{{msg}}</h1></div>", //template模板只能有一个根元素
+    //组件中的data是一个函数
+    data(){
+        return{
+            msg:"这是组件中的数据"
+        }
+      },
+      methods:{
+          hello(){
+              alert("你好！！！")
+          }
+      }
+    })
 
- 
+    var vm  = new Vue({
+        el:"#app",
+        data:{},
+        methods: {      
+        },
+    })
+</script>
+</html>
+```
 
-## **1.7.3** ***\*局部组件\****
+## **1.7.3** ***局部组件***
 
-相比起全局组件，局部组件只能在同一个实例内才能被调用。局部组件的写法和全局组件差不多。  **唯****一不同就是：局部组件要写在****Vue****实例里面。**
+​     相比起全局组件，局部组件只能在同一个实例内才能被调用。局部组件的写法和全局组件差不多。  唯一不同就是：局部组件要写在Vue实例里面。
 
+ 语法格式：
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps131.png) |
-
- 
-
-
-
- 
+```html
+new Vue({
+el: "#app", components: {
+组件名: {
+// 组件结构
+template: "HTML代码",
+// data数据
+data() { return { msg:"xxxx" };},
+   },
+  },
+});
+```
 
 注意:
 
@@ -1490,77 +1670,37 @@ Vue.js 提供了一个方法 watch，它用于观察Vue实例上的数据变动�
 
 components 里可以创建多个组件。
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps132.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps133.png)
-
- 
-
-## **1.7.4** ***\*组件与模板分离\****
+## **1.7.4** 组件与模板分离
 
 由于把html语言写在组件里面很不方便，也不太好看所以将它们分开写。
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps134.png) |
-
- 
-
-
 
  
 
 总结:
 
-\1. 上面这种写法，浏览器会把 html 里的 template 标签过滤掉。所以 template 标签的内容是不会在页面中展示的。直到它被 JS 中的 Vue 调用。
+1. 上面这种写法，浏览器会把 html 里的 template 标签过滤掉。所以 template 标签的内容是不会在页面中展示的。直到它被 JS 中的 Vue 调用。
 
-\2. 在 html 中，template 标签一定要有一个 id，因为通过 id 是最直接被选中的。 data 和 methods
+2. 在 html 中，template 标签一定要有一个 id，因为通过 id 是最直接被选中的。 data 和 methods
 
 等 参数，全部都要放到 Vue 实例里面写
 
-# **1.8** ***\*Vue\*******\*生命周期\****
+# **1.8** Vue生命周期
 
-## **1.8.1** ***\*生命周期图示\****
+## **1.8.1** 生命周期图示
 
 
 
 每个Vue实例在被**创建**之前都要经过一系列的初始化过程,这个过程就是vue的生命周期了解生命周期的好处:
 
-\1. 找错误
+1. 找错误
 
-\2. 解决需求
+2. 解决需求
 
 下图展示了实例的生命周期。你不需要立马弄明白所有的东西，不过随着你的不断学习和使用，它的参  考价值会越来越高。
 
 
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps135.png) |
 
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps136.png) 
-
- 
-
- 
 
 ## **1.8.2** ***\*钩子函数介绍\****
 
