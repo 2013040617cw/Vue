@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- 导入Vue和router库 -->
+<script src="./js/vue.min.js"></script>
+<script src="./js/vue-router.min.js"></script>
+<body>
+    <div id="app">
+        <h1>渣浪.com</h1>
+        <p>
+
+                <!--添加超链接，router-link组件来进行导航，to属性指定链接  -->
+                <router-link to="/home">go to home</router-link>
+                <router-link to="/news">go to news</router-link>
+        </p>
+        <!-- 路由出口  路由匹配到组件以后，要渲染到这里 -->
+        <router-view></router-view>
+
+
+    </div>
+</body>
+<script>
+    // 1.定义路由所需的组件
+    const home = {template:"<div>首页</div>"}
+    const news = {template:"<div>新闻</div>"}
+
+    // 2.定义路由  每个路由由两部分 path(路径),component(组件)
+    const routes=[
+        {path:"/home" ,component:home},
+        {path:"/news",component:news}
+
+    ];
+
+    //3.创建路由管理器实例
+    const router = new VueRouter({
+        routes:routes
+
+    });
+
+    // 4.创建Vue实例  将router注入到Vue实例中。让整个应用都拥有路由的功能
+    var vm = new Vue({
+        router
+    }).$mount("#app");  //代替了 el:"#app"
+
+</script>
+</html>

@@ -1674,23 +1674,62 @@ components 里可以创建多个组件。
 
 由于把html语言写在组件里面很不方便，也不太好看所以将它们分开写。
 
- 
+ 代码示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="./js/vue.min.js"></script>
+<body>
+    <div id="app">
+    <web-msg></web-msg>
+    </div>
+    
+    <!-- 将模板写在HTML中, 给模板指定一个ID -->
+    <template id="tmp1">
+    <div>
+    <button @click="show">{{msg}}</button>
+    </div>
+    </template>
+    </body>
+    
+    <script src="./vue.min.js"></script>
+    <script>
+    var VM = new Vue({ el: "#app", components: {
+    "web-msg": { template: "#tmp1", data() {
+    return {
+    msg: "点击查询",
+    };
+    },
+    methods: { show() {
+    alert("正在查询,请稍等...");
+        },
+      },
+    },
+    "web-msg2": {},
+    },
+    });
+    </script>
+</html>
+```
 
 总结:
 
 1. 上面这种写法，浏览器会把 html 里的 template 标签过滤掉。所以 template 标签的内容是不会在页面中展示的。直到它被 JS 中的 Vue 调用。
 
-2. 在 html 中，template 标签一定要有一个 id，因为通过 id 是最直接被选中的。 data 和 methods
-
-等 参数，全部都要放到 Vue 实例里面写
+2. 在 html 中，template 标签一定要有一个 id，因为通过 id 是最直接被选中的。 data 和 methods等参数，全部都要放到 Vue 实例里面写
 
 # **1.8** Vue生命周期
 
 ## **1.8.1** 生命周期图示
 
-
-
-每个Vue实例在被**创建**之前都要经过一系列的初始化过程,这个过程就是vue的生命周期了解生命周期的好处:
+每个Vue实例在被创建之前都要经过一系列的初始化过程,这个过程就是vue的生命周期了解生命周期的好处:
 
 1. 找错误
 
@@ -1700,15 +1739,13 @@ components 里可以创建多个组件。
 
 
 
+![image-20220811094620885](Vue.js.assets/image-20220811094620885.png)
 
-
-## **1.8.2** ***\*钩子函数介绍\****
+## **1.8.2** 钩子函数介绍
 
 生命周期中的钩子函数
 
 钩子函数：钩子函数是在一个事件触发的时候，在系统级捕获到了他，然后做一些操作
-
- 
 
 | **函数**             | **说明**                                              |
 | -------------------- | ----------------------------------------------------- |
@@ -1721,182 +1758,191 @@ components 里可以创建多个组件。
 | **beforeDestroy** () | 钩子函数在实例销毁之前调用                            |
 | **destroyed** ()     | 钩子函数在Vue 实例销毁后调用                          |
 
-## **1.8.3** ***\*案例演示\****
+## **1.8.3** 案例演示
 
+```html
+<body>
+<div id="app">
+<button @click="next">获取下一句</button>
+<h2 id="msg">{{message}}</h2>
+</div>
+</body>
+<script src="./vue.min.js"></script>
+<script>
+var VM = new Vue({ el: "#app", data: {
+message: "想当年,金戈铁马",
+},
+methods: { next() {
+this.message = "气吞万里如虎!";
+},
+show() {
+alert("show方法执行!");
+},
+},
+beforeCreate() {
+alert("1.beforeCreate函数在组件实例化之前执行"); alert(this.message);  //undefined this.show(); // this.show is not a function
+},
+created() {
+alert("2.created函数执行时,组件实例化完成,但是DOM(页面)还未生成"); alert(this.message);
+this.show();
+},
+beforeMount() { alert(
+"3.beforeMount函数执行时，模板已经在内存中编辑完成了，尚未被渲染到页面中"
+);
+alert(document.getElementById("msg").innerText); //Cannot read property 'innerText' of null
+},
+mounted() {
+alert("4.mounted函数执行时,模板已经渲染到页面,执行完页面显示"); alert(document.getElementById("msg").innerText);
+},
+beforeUpdate() {
+alert("5.beforeUpdate执行时，内存中的数据已更新，但是页面尚未被渲染"); alert("页面显示的内容:" + document.getElementById("msg").innerText); alert("data中的message数据是: " + this.message);
+},
+updated() {
+alert("6.updated执行时，内存中的数据已更新,此方法执行完显示页面!");
+},
+});
+</script>
+```
 
+# **1.9** **Vue** Router路由
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps137.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps138.png)
-
- 
-
-**1.9** **Vue** **Router** **路由**
-
-**1.9.1** **什么是路由****?**
+## **1.9.1** 什么是路由?
 
 在Web开发中，路由是指根据URL分配到对应的处理程序。 路由允许我们通过不同的 URL 访问不同的内容。
 
 通过 Vue.js 可以实现多视图单页面web应用（single page web application，SPA）
 
+![image-20220811100853404](Vue.js.assets/image-20220811100853404.png)
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps139.png) |
-
- 
-
-
-
-## **1.9.2** ***\*什么是\*******\*SPA\**** ***\*?\****
+## **1.9.2** 什么是SPA?
 
 百度百科
 
+单页面Web应用（single page web application，SPA），就是只有一张Web页面的应用， 是加载单个HTML 页面并在用户与应用程序交互时动态更新该页面的Web应用程序。
 
+ 单页应用不存在页面跳转，它本身只有一个HTML页面。我们传统意义上的页面跳转在单页应用的概念下转变为了body 内某些元素的替换和更新，举个例子: 
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps140.png)![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps141.png)单页面Web应用（single page web application，SPA），就是只有一张Web页面的应用， 是加载单个HTML 页面并在用户与应用程序交互时动态更新该页面的Web应用程序。
+![image-20220811100943558](Vue.js.assets/image-20220811100943558.png)
 
- 
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps142.png)单页应用不存在页面跳转，它本身只有一个HTML页面。我们传统意义上的页面跳转在单页应用的概念下转变为了body 内某些元素的替换和更新，举个例子:
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps143.png) |
-
- 
-
-
-
- 
-
-整个body的内容从登录组件变成了欢迎页组件, 从视觉上感受页面已经进行了跳转。但实际上，页面只是随着用户操作，实现了局部内容更新,依然还是在index.html 页面中。
-
- 
+​    整个body的内容从登录组件变成了欢迎页组件, 从视觉上感受页面已经进行了跳转。但实际上，页面只是随着用户操作，实现了局部内容更新,依然还是在index.html 页面中。
 
 单页面应用的好处:
 
-\1. 用户操作体验好，用户不用刷新页面，整个交互过程都是通过Ajax来操作。
+1. 用户操作体验好，用户不用刷新页面，整个交互过程都是通过Ajax来操作。
 
-\2. 适合前后端分离开发，服务端提供http接口，前端请求http接口获取数据，使用JS进行客户端渲染。
+2. 适合前后端分离开发，服务端提供http接口，前端请求http接口获取数据，使用JS进行客户端渲染。
 
-## **1.9.3** ***\*路由相关的概念\****
+## **1.9.3** 路由相关的概念
 
-### ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps144.png)***\*router\**** :
+### router :
 
-是 Vue.js 官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用（SPA）变得易如反掌 ,router 就相当于一个管理者，它来管理路由。
+​     是 Vue.js 官方的路由管理器。它和 Vue.js 的核心深度集成，让构建单页面应用（SPA）变得易如反掌 ,router 就相当于一个管理者，它来管理路由。
 
-### ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps145.png)***\*route\****:
+### route:
 
 ruter相当于路由器, route就相当于一条路由.比如: Home按钮 => home内容， 这是一条route, news按钮 => news内容， 这是另一条路由。
 
-### ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps146.png)***\*routes\**** :
+### routes :
 
 是一组路由，把上面的每一条路由组合起来，形成一个数组。[{home 按钮 =>home内容 }， { about按钮 => about 内容}]
 
-### ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps147.png)***\*router-link\*******\*组件\****:
+### router-link组件:
 
 router-link 是一个组件，是对标签的一个封装. 该组件用于设置一个导航链接，切换不同 HTML
 
 内容。 **to** 属性为目标地址， 即要显示的内容
 
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps148.png)**router-view** **组件**:
+### **router-view** **组件**:
 
 路由导航到指定组件后,进行渲染显示页面.
 
-## **1.9.4** ***\*使用路由\****
-
-
+## **1.9.4** 使用路由
 
 1) Vue.js 路由需要载入 vue-router 库
 
+```html
+//方式1: 本地导入
+<script src="vue-router.min.js"></script>
 
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps149.png) |
-
- 
-
-
-
- 
+//方式2: CDN
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+```
 
 2) 使用步骤
 
-\1. 定义路由所需的组件
+1. 定义路由所需的组件
 
-\2. 定义路由 每个路由都由两部分 path (路径) 和component (组件)
+2. 定义路由 每个路由都由两部分 path (路径) 和component (组件)
 
-\3. 创建router路由器实例 ,管理路由
+3. 创建router路由器实例 ,管理路由
 
-\4. 创建Vue实例, 注入路由对象, 使用$mount() 指定挂载点
+4. 创建Vue实例, 注入路由对象, 使用$mount() 指定挂载点
 
+   代码示例：
 
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta http-equiv="X-UA-Compatible" content="ie=edge">
+       <title>Document</title>
+   </head>
+   <!-- 导入Vue和router库 -->
+   <script src="./js/vue.min.js"></script>
+   <script src="./js/vue-router.min.js"></script>
+   <body>
+       <div id="app">
+           <h1>渣浪.com</h1>
+           <p>
+   
+                   <!--添加超链接，router-link组件来进行导航，to属性指定链接  -->
+                   <router-link to="/home">go to home</router-link>
+                   <router-link to="/news">go to news</router-link>
+           </p>
+           <!-- 路由出口  路由匹配到组件以后，要渲染到这里 -->
+           <router-view></router-view>
+   
+   
+       </div>
+   </body>
+   <script>
+       // 1.定义路由所需的组件
+       const home = {template:"<div>首页</div>"}
+       const news = {template:"<div>新闻</div>"}
+   
+       // 2.定义路由  每个路由由两部分 path(路径),component(组件)
+       const routes=[
+           {path:"/home" ,component:home},
+           {path:"/news",component:news}
+   
+       ];
+   
+       //3.创建路由管理器实例
+       const router = new VueRouter({
+           routes:routes
+   
+       });
+   
+       // 4.创建Vue实例  将router注入到Vue实例中。让整个应用都拥有路由的功能
+       var vm = new Vue({
+           router
+       }).$mount("#app");  //代替了 el:"#app"
+   
+   </script>
+   </html>
+   ```
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps150.png) |
+## **1.9.5** 路由总结
 
- 
+1. router是Vue中的路由管理器对象,用来管理路由.
 
+2. route是路由对象,一个路由就对应了一条访问路径,一组路由用routes表示
 
+3. 每个路由对象都有两部分 path(路径)和component (组件)
 
- 
+4. router-link 是对a标签的封装,通过to属性指定连接
 
-3) HTM代码
+5. router-view  路由访问到指定组件后,进行页面展示
 
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps151.png) |
-
- 
-
-
-
- 
-
-4) JS代码
-
-
-
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps152.png) |
-
- 
-
-
-
-
-
-![img](file:///C:\Users\cuiwei\AppData\Local\Temp\ksohtml17608\wps153.png)
-
- 
-
-## **1.9.5** ***\*路由总结\****
-
-\1. router是Vue中的路由管理器对象,用来管理路由.
-
-\2. route是路由对象,一个路由就对应了一条访问路径,一组路由用routes表示
-
-\3. 每个路由对象都有两部分 path(路径)和component (组件)
-
-\4. router-link 是对a标签的封装,通过to属性指定连接
-
-\5. router-view  路由访问到指定组件后,进行页面展示
-
-\###
